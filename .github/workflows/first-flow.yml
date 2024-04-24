@@ -1,0 +1,9 @@
+name: first-workflow
+on: workflow_dispatch
+
+jobs:
+    first-job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: installing npm
+              run: echo "Hello world!"
