@@ -1,9 +1,22 @@
-name: first-workflow
-on: push
+name: Unlock Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: 'Repository name with owner (e.g., owner/repo)'
+        required: true
 
 jobs:
-    first-job:
-        runs-on: ubuntu-latest
-        steps:
-            - name: installing npm
-              run: echo "Hello world!"
+  unlock-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Unlock repository
+      run: |
+        TOKEN=$GITHUB_TOKEN
+        REPO=$INPUT_REPOSITORY
+        curl -X DELETE -H "Authorization: token $TOKEN" "https://api.github.com/repos/$REPO/branches/main/protection"
