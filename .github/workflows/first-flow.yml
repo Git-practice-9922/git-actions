@@ -17,6 +17,6 @@ jobs:
       
     - name: Unlock repository
       run: |
-        TOKEN=$GITHUB_TOKEN
-        REPO=$INPUT_REPOSITORY
+        TOKEN=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
+        REPO=https://github.com/Git-practice-9922/git-actions.git
         curl -X DELETE -H "Authorization: token $TOKEN" "https://api.github.com/repos/$REPO/branches/main/protection"
