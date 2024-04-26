@@ -1,0 +1,19 @@
+name: List Repositories
+
+on:
+  workflow_dispatch:
+
+jobs:
+  list-repos:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: List Repositories
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # Construct the API endpoint URL to list repositories
+        API_URL="https://api.github.com/user/repos?per_page=100&page=1"
+        
+        # Send GET request to list repositories using curl
+        curl -s -H "Authorization: token $GITHUB_TOKEN" "$API_URL" | jq '.[] | .full_name'
