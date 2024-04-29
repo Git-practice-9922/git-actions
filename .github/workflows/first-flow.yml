@@ -21,7 +21,11 @@ jobs:
         REPO_NAME: ${{ github.event.inputs.repository }}
       run: |
         # Construct the API endpoint URL
-        API_URL="https://api.github.com/repos/KrushnaPimpale/git-actions/branches/master/protection"
+        API_URL="https://api.github.com/repos/Git-practice-9922/git-actions/branches/master/protection"
         
         # Send DELETE request to remove branch protection using curl
-        curl -X DELETE -H "Authorization: token $GITHUB_TOKEN" "$API_URL"
+        curl -X DELETE -H "Authorization: token $GITHUB_TOKEN" "$API_URL" \
+        -d '{"required_status_checks": null,
+         "enforce_admins":false,"required_pull_request_reviews":null,"dismiss_stale_reviews":false,
+         "require_code_owner_reviews":false,"required_approving_review_count":null,"require_last_push_approval":false,"restrictions":null,
+         "required_linear_history":false,"allow_force_pushes":false,"allow_deletions":false,"block_creations":false,"required_conversation_resolution":false,"lock_branch":true,"allow_fork_syncing":false}'
