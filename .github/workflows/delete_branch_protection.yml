@@ -24,4 +24,4 @@ jobs:
         API_URL="https://api.github.com/repos/Git-practice-9922/git-actions/branches/master/protection"
         
         # Send DELETE request to remove branch protection using curl
-        curl -X DELETE -H "Authorization: token $GITHUB_TOKEN" "$API_URL"
+        curl -X DELETE -H "Authorization: token $WORK_GITHUB_TOKEN" "$API_URL"
