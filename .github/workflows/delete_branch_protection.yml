@@ -1,4 +1,4 @@
-name: Unlock Repository
+name: Delete Branch Protection
 
 on:
   workflow_dispatch:
