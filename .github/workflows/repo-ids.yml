@@ -22,7 +22,7 @@ jobs:
         response=$(curl -H "Authorization: token $GITHUB_TOKEN" "$API_URL")
         
         # Extract repository names and IDs from the JSON response
-        repos=$(echo "$response" | jq -r '.[] | "\(.name) \(.id)"')
+        repos=$(echo "$response" | jq -r '.[] | "\(.full_name) \(.id)"')
         
         # Print repository names and IDs
         echo "Repository Name | Repository ID"
