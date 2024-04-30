@@ -13,7 +13,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         # Construct the API endpoint URL to list repositories
-        API_URL="https://api.github.com/users/Git-practice-9922/repos"
+        API_URL="https://api.github.com/users/repos"
         
         # Send GET request to list repositories using curl
         curl -s -H "Authorization: token $GITHUB_TOKEN" "$API_URL" | jq '.[] | "\(.full_name) \(.id)"'
