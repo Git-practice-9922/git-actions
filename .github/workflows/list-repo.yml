@@ -9,6 +9,7 @@ jobs:
 
     steps:
     - name: List Repositories
+      id: fetch-repos
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
@@ -17,3 +18,19 @@ jobs:
         
         # Send GET request to list repositories using curl
         curl -s -H "Authorization: token $GITHUB_TOKEN" "$API_URL" | jq '.[] | "\(.full_name) \(.id)"'
+
+    - name: Convert JSON to CSV
+      id: convert-to-csv
+      run: echo "${{ toJson(steps.fetch-repos.outputs.result) }}" > repos.json
+  
+    - name: Convert JSON to Excel
+      uses: docker://alexcnichols/json-to-xlsx:latest
+      with:
+        input: repos.json
+        output: repos.xlsx
+  
+    - name: Upload Excel file
+      uses: actions/upload-artifact@v2
+      with:
+        name: repositories
+        path: repos.xlsx
