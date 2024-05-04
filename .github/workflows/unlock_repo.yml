@@ -1,0 +1,30 @@
+name: Unlock repos
+on: 
+    workflow_dispatch:
+        inputs:
+          repository:
+            description: 'Repository name with owner (e.g., owner/repo)'
+            required: true
+jobs:
+    unlock-repos:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+              
+            - name: Unlock repository
+              env:
+                GITHUB_TOKEN: ${{ secrets.WORK_GITHUB_TOKEN }}
+                REPO_NAME: ${{ github.event.inputs.repository }}
+              run: |
+                # Construct the API endpoint URL
+                API_URL="https://api.github.com/orgs/ORG/migrations/MIGRATION_ID/repos/$REPO_NAME/lock"
+                
+            
+
+                # Send DELETE request to remove branch protection using curl
+                curl -X DELETE -H "Authorization: token $WORK_GITHUB_TOKEN" "$API_URL"
+
+#multiple repos and multiple migration ids mapping
+#getting repo names and migration id against it.
