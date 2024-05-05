@@ -1,0 +1,34 @@
+name: Unlock Repositories after Migration
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_file_path:
+        description: 'Path to the input.txt file'
+        required: true
+
+jobs:
+  unlock-repositories:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Read input file and process repositories
+      run: |
+        # Read the input file
+        INPUT_FILE_PATH="${{ github.event.inputs.input_file_path }}"
+        while IFS= read -r repo_name; do
+          # Check if the corresponding TXT file exists in the Report folder
+          if [ -f "Report/${repo_name}.txt" ]; then
+            # Extract Migration ID from the TXT file
+            migration_id=$(grep -oP 'Migration ID:\s*\K\d+' "Report/${repo_name}.txt")
+            # Construct GitHub API endpoint URL
+            api_url="https://api.github.com/orgs/Git-practice-9922/migrations/${migration_id}/repos/${repo_name}/lock"
+            # Make a DELETE request to unlock the repository after migration
+            curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "${api_url}"
+          else
+            echo "TXT file for repository ${repo_name} not found."
+          fi
+        done < "$INPUT_FILE_PATH"

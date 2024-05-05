@@ -24,7 +24,7 @@ jobs:
             
 
                 # Send DELETE request to remove branch protection using curl
-                curl -X DELETE -H "Authorization: token $WORK_GITHUB_TOKEN" "$API_URL"
+                curl -X DELETE -H "Authorization: token $GITHUB_TOKEN" "$API_URL"
 
 #multiple repos and multiple migration ids mapping
 #getting repo names and migration id against it.
