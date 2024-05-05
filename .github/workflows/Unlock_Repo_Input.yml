@@ -1,4 +1,4 @@
-name: Unlock Repositories after Migration
+name: Unlock Repositories after Migration Shell Script
 
 on:
   workflow_dispatch:
@@ -28,7 +28,9 @@ jobs:
             # Construct GitHub API endpoint URL
             api_url="https://api.github.com/orgs/Git-practice-9922/migrations/${migration_id}/repos/${repo_name}/lock"
             # Make a DELETE request to unlock the repository after migration
-            curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "${api_url}"
+            response=$(curl -X DELETE -H "Authorization: token ${{ secrets.WORK_GITHUB_TOKEN }}" -w "\n%{http_code}" "${api_url}")
+            echo "Response: ${response%$'\n'*}"  # Remove trailing newline from response
+            echo "Status code: ${response##*$'\n'}"  # Get status code from response
           else
             echo "TXT file for repository ${repo_name} not found."
           fi
