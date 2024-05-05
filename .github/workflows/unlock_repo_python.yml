@@ -1,0 +1,66 @@
+name: Unlock Repositories after Migration
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_file_path:
+        description: 'Path to the input.txt file'
+        required: true
+
+jobs:
+  unlock-repositories:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'  # Use Python 3.x version
+
+    - name: Install dependencies
+      run: pip install requests
+
+    - name: Unlock repositories using Python script
+      run: |
+        import os
+        import requests
+
+        # Read input file path from workflow input
+        input_file_path = "${{ github.event.inputs.input_file_path }}"
+
+        # Read repository names from input file
+        with open(input_file_path, 'r') as f:
+            repository_names = f.readlines()
+        
+        # Loop through each repository name
+        for repo_name in repository_names:
+            repo_name = repo_name.strip()  # Remove leading/trailing whitespace
+            
+            # Check if corresponding TXT file exists in Report folder
+            txt_file_path = os.path.join("Report", f"{repo_name}.txt")
+            if os.path.isfile(txt_file_path):
+                # Read Migration ID from TXT file
+                with open(txt_file_path, 'r') as txt_file:
+                    migration_id = None
+                    for line in txt_file:
+                        if line.startswith("Migration ID:"):
+                            migration_id = line.split(":")[1].strip()
+                            break
+                
+                if migration_id:
+                    # Construct GitHub API endpoint URL
+                    api_url = f"https://api.github.com/orgs/Git-practice-9922/migrations/{migration_id}/repos/{repo_name}/lock"
+                    
+                    # Make a POST request to unlock the repository after migration
+                    response = requests.delete(api_url, headers={"Authorization": f"token ${{ secrets.GITHUB_TOKEN }}"})
+                    if response.status_code == 204:
+                        print(f"Repository {repo_name} unlocked successfully.")
+                    else:
+                        print(f"Failed to unlock repository {repo_name}. Status code: {response.status_code}")
+                else:
+                    print(f"Migration ID not found in TXT file for repository {repo_name}.")
+            else:
+                print(f"TXT file for repository {repo_name} not found.")

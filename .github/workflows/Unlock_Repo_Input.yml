@@ -20,6 +20,7 @@ jobs:
         # Read the input file
         INPUT_FILE_PATH="${{ github.event.inputs.input_file_path }}"
         while IFS= read -r repo_name; do
+          echo "Processing line: $repo_name"  
           # Check if the corresponding TXT file exists in the Report folder
           if [ -f "Report/${repo_name}.txt" ]; then
             # Extract Migration ID from the TXT file
