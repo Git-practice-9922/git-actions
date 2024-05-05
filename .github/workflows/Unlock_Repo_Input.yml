@@ -29,9 +29,15 @@ jobs:
             api_url="https://api.github.com/orgs/Git-practice-9922/migrations/${migration_id}/repos/${repo_name}/lock"
             # Make a DELETE request to unlock the repository after migration
             response=$(curl -X DELETE -H "Authorization: token ${{ secrets.WORK_GITHUB_TOKEN }}" -w "\n%{http_code}" "${api_url}")
-            echo "Response: ${response%$'\n'*}"  # Remove trailing newline from response
-            echo "Status code: ${response##*$'\n'}"  # Get status code from response
+            echo "${response%$'\n'*}" >> output.txt  # Append response body to output.txt
+            echo "Status code: ${response##*$'\n'}" >> output.txt  # Append status code to output.txt
           else
-            echo "TXT file for repository ${repo_name} not found."
+            echo "TXT file for repository ${repo_name} not found." >> output.txt
           fi
         done < "$INPUT_FILE_PATH"
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: output
+        path: output.txt
