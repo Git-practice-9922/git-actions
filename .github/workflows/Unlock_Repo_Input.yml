@@ -28,7 +28,7 @@ jobs:
             migration_id=$(grep -oP 'Migration ID:\s*\K\d+' "Report/${repo_name}.txt")
             # Construct GitHub API endpoint URL
             api_url="https://api.github.com/orgs/Git-practice-9922/migrations/${migration_id}/repos/${repo_name}/lock"
-            # Make a DELETE request to unlock the repository after migration
+            # Make a POST request to unlock the repository after migration
             response=$(curl -X DELETE -H "Authorization: token ${{ secrets.WORK_GITHUB_TOKEN }}" -w "\n%{http_code}" "${api_url}")
             echo "${response%$'\n'*}" >> output.txt  # Append response body to output.txt
             echo "Status code: ${response##*$'\n'}" >> output.txt  # Append status code to output.txt
