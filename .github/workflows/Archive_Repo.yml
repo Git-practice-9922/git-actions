@@ -2,6 +2,10 @@ name: Archive/Unarchive Repos
 
 on:
   workflow_dispatch:
+    inputs:
+        action:
+          description: 'Action to perform (archive or unarchive)'
+          required: true
 
 jobs:
   archive_unarchive:
@@ -20,3 +24,6 @@ jobs:
 
       - name: Run Python Script
         run: python Archive-Unarchive.py
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            ACTION: ${{ github.event.inputs.action }}
