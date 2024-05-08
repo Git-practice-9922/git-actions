@@ -24,8 +24,8 @@ with open("input.txt", "r") as file:
     print(repo_names)
 
 # Prompt the user for an action
-action = input(f'Want to archive or unarchive the repositories? Type "archive" or "unarchive": ')
-
+#action = input(f'Want to archive or unarchive the repositories? Type "archive" or "unarchive": ')
+action = os.getenv('ACTION')
 
     # Perform action based on user input
 if action == "archive":
