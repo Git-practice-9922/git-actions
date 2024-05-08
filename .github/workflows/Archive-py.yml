@@ -1,0 +1,61 @@
+name: Archive-Python Repo
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  issue_flow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Python Script
+        id: run_python
+        run: |
+                python_script=$(cat <<EOF
+                import os
+                import json
+                import requests
+
+                # Extract JSON input from the comment body
+                comment_body = os.getenv('INPUT_COMMENT_BODY')
+                son_input = json.loads(comment_body)
+
+                for repo, data in json_input.items():
+                    owner = data['organisation']
+                    repo_name = data['repository']
+
+                # Prompt the user for an action
+                action = input(f'Want to archive the repo {repo_name} in {owner}? Type "archive" or "unarchive": ')
+
+                # Perform action based on user input
+                if action == "archive":
+                    # Call GitHub API to archive repository
+                    response = requests.patch(f"https://api.github.com/repos/{owner}/{repo_name}", 
+                                  headers={"Authorization": "Bearer ${{ secrets.GITHUB_TOKEN }}"},
+                                  json={"archived": True})
+                    print(f"Response code for archiving {repo_name}: {response.status_code}")
+                elif action == "unarchive":
+                    # Call GitHub API to unarchive repository
+                    response = requests.patch(f"https://api.github.com/repos/{owner}/{repo_name}", 
+                                  headers={"Authorization": "Bearer ${{ secrets.GITHUB_TOKEN }}"},
+                                  json={"archived": False})
+                    print(f"Response code for unarchiving {repo_name}: {response.status_code}")
+                else:
+                    print("Invalid action. Please provide 'archive' or 'unarchive'.")
+
+                EOF
+                )
+
+                echo "${{ github.event.comment.body }}" | python -c "$python_script"
