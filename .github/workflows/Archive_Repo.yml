@@ -22,18 +22,13 @@ jobs:
         run: |
           # Extract repository and organization names from the issue body
           repository=${{ matrix.repository }}
-          owner= $owner
-    
+
+          echo "Repo = $repository"
+          echo "Owner = $owner"
     
 
           # Echo repository and owner names as output
-            echo "repo-name=$repository" >> $GITHUB_OUTPUT
-            echo "owner-name=$owner" >> $GITHUB_OUTPUT
-          
-      
-      - name: Access it
-        run: |
-            echo "Repo Name is ${{ steps.extract_repo_owner.outputs.repo-name }}"
-            echo "Owner name is ${{ steps.extract_repo_owner.outputs.owner-name }}"
+            #echo "repo-name=$repository" >> $GITHUB_OUTPUT
+            #echo "owner-name=$owner" >> $GITHUB_OUTPUT
 
     
