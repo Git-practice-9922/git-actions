@@ -9,7 +9,6 @@ jobs:
     strategy:  
       matrix:
         repository: ${{ fromJson(github.event.issue.body).*.repository }}  # rep01, repo02
-        owner: ${{ fromJSON(github.event.issue.body).*.organisation }}
       max-parallel: 1
 
       
@@ -27,8 +26,8 @@ jobs:
     
 
           # Echo repository and owner names as output
-            echo "repo-name=$repository" >> $GITHUB_OUTPUT
-            echo "owner-name=$owner" >> $GITHUB_OUTPUT
+            echo "Repo-name=$repository" >> $GITHUB_OUTPUT
+            echo "Owner-name=$owner" >> $GITHUB_OUTPUT
           
       
       - name: Access it
