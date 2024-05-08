@@ -20,11 +20,15 @@ jobs:
           owner=${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
 
           # Echo repository and owner names as output
-          echo "::set-output name=repository::$repository"
-          echo "::set-output name=owner::$owner"
+          echo "repository=$repository" >> $GITHUB_OUTPUT
+          echo "owner=$owner" >> $GITHUB_OUTPUT
+          
       
       - name: Output Repository and Owner
+    
         run: |
           # Output the extracted repository and owner names
+
+          
           echo "Repository: ${{ steps.extract_repo_owner.outputs.repository }}"
           echo "Owner: ${{ steps.extract_repo_owner.outputs.owner }}"
