@@ -1,8 +1,8 @@
 name: Archive/Unarchive Repo
 
 on:
-  issues:
-    types: [opened, edited]
+    issue_comment:
+        types: [created]
 jobs:
   issue_flow:
     runs-on: ubuntu-latest
@@ -20,7 +20,7 @@ jobs:
         id: extract_repo_owner
         run: |
           # Extract repository and organization names from the issue body
-          repository=${{ fromJSON(github.event.issue.body)[matrix.repository].repository }}
+          repository=$matrix.repository
           owner=${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
     
     
