@@ -29,7 +29,7 @@ jobs:
                 import requests
 
                 # Extract JSON input from the comment body
-                comment_body = os.getenv('INPUT_COMMENT_BODY')
+                comment_body = os.getenv(${{ fromJson(github.event.issue.body) }})
                 son_input = json.loads(comment_body)
 
                 for repo, data in json_input.items():
