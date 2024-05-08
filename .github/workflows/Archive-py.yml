@@ -7,6 +7,10 @@ on:
 jobs:
   issue_flow:
     runs-on: ubuntu-latest
+    strategy:  
+      matrix:
+        repository: ${{ fromJson(github.event.issue.body).*.repository }}  # rep01, repo02
+      max-parallel: 1
 
     steps:
       - name: Checkout Repository
@@ -28,6 +32,10 @@ jobs:
                 import json
                 import requests
 
+                os.environ["Input_Json"] = "${{ fromJSON(github.event.issue.body) }}"
+                repo_name=${{ matrix.repository }}
+                owner=${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
+                    '''
                 # Extract JSON input from the comment body
                 comment_body = os.getenv('INPUT_COMMENT_BODY')
                 son_input = json.loads(comment_body)
@@ -35,7 +43,8 @@ jobs:
                 for repo, data in json_input.items():
                     owner = data['organisation']
                     repo_name = data['repository']
-
+                     '''
+                print(repo_name)        
                 # Prompt the user for an action
                 action = input(f'Want to archive the repo {repo_name} in {owner}? Type "archive" or "unarchive": ')
 
