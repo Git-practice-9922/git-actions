@@ -3,31 +3,28 @@ name: Archive/Unarchive Repo
 on:
   issues:
     types: [opened, edited]
-
-    # expected issue body input should be structured as follows:
-  #     {
-  #         "rep01": {
-  #             "repository": "rep01",
-  #             "organisation": "org01"
-  #         },
-  #         "rep02": {
-  #             "repository": "rep02",
-  #             "organisation": "org02"
-  #         }
-  #     }
- 
-
 jobs:
   issue_flow:
     runs-on: ubuntu-latest
     strategy:  
-            matrix:
-                repository: ${{ fromJson(github.event.issue.body).*.repository }}  # rep01, repo02
-            max-parallel: 1
-    owner: '${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
-
+      matrix:
+        repository: ${{ fromJson(github.event.issue.body).*.repository }}  # rep01, repo02
+      max-parallel: 1
+    
     steps:
-        - name: echo
-          run: |
-            echo "${{repository}}"
-            echo "${{owner}}"
+      - name: Extract Repository and Owner
+        id: extract_repo_owner
+        run: |
+          # Extract repository and organization names from the issue body
+          repository=${{ fromJSON(github.event.issue.body)[matrix.repository].repository }}
+          owner=${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
+
+          # Echo repository and owner names as output
+          echo "::set-output name=repository::$repository"
+          echo "::set-output name=owner::$owner"
+      
+      - name: Output Repository and Owner
+        run: |
+          # Output the extracted repository and owner names
+          echo "Repository: ${{ steps.extract_repo_owner.outputs.repository }}"
+          echo "Owner: ${{ steps.extract_repo_owner.outputs.owner }}"
