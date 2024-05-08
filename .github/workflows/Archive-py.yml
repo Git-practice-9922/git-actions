@@ -19,7 +19,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.10
+          python-version: 3.13.0-alpha.6
 
       - name: Install Dependencies
         run: pip install requests
@@ -32,12 +32,8 @@ jobs:
                 import json
                 import requests
 
-                os.environ["Input_Json"] = "${{ fromJSON(github.event.issue.body) }}"
-                repo_name=${{ matrix.repository }}
-                owner=${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
-                    '''
                 # Extract JSON input from the comment body
-                comment_body = os.getenv('INPUT_COMMENT_BODY')
+                comment_body = os.getenv("Input_Json")
                 son_input = json.loads(comment_body)
 
                 for repo, data in json_input.items():
