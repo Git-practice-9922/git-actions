@@ -20,7 +20,7 @@ jobs:
         id: extract_repo_owner
         run: |
           # Extract repository and organization names from the issue body
-          repository=$matrix.repository
+          repository=${{ matrix.repository }}
           owner=${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
     
     
