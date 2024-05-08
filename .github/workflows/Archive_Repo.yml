@@ -25,5 +25,5 @@ jobs:
       - name: Run Python Script
         run: python Archive-Unarchive.py
         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.WORK_GITHUB_TOKEN }}
             ACTION: ${{ github.event.inputs.action }}
