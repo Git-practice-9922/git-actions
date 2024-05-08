@@ -4,48 +4,30 @@ on:
   issues:
     types: [opened, edited]
 
+    # expected issue body input should be structured as follows:
+  #     {
+  #         "rep01": {
+  #             "repository": "rep01",
+  #             "organisation": "org01"
+  #         },
+  #         "rep02": {
+  #             "repository": "rep02",
+  #             "organisation": "org02"
+  #         }
+  #     }
+ 
+
 jobs:
   issue_flow:
     runs-on: ubuntu-latest
+    strategy:  
+            matrix:
+                repository: ${{ fromJson(github.event.issue.body).*.repository }}  # rep01, repo02
+            max-parallel: 1
+    owner: '${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
 
     steps:
-      - name: Extract Repository Names
-        id: extract_repo_names
-        run: |
-          # Extract repository names from the issue body and store them in an array
-          repo_names=$(awk '/- \[ \]/ {print $3}' $GITHUB_EVENT_PATH)
-          echo "::set-output name=repo_names::$repo_names"
-
-      - name: Loop Through Repositories
-        id: loop_repos
-        run: |
-          for repo in "${{ steps.extract_repo_names.outputs.repo_names }}"; do
-            # Provide options to the user by adding comments to the issue
-            echo "Please choose an action for repository $repo: archive or unarchive"
-            # Optionally, you can add a form for the user to choose an action
-
-            # Wait for user input (e.g., a comment on the issue)
-            # You can use GitHub API or a third-party tool to monitor comments
-            # Once user input is received, proceed to the next step
-          done
-
-      - name: Handle User Input and Archive/Unarchive Repositories
-        id: handle_user_input
-        run: |
-          # Use GitHub API to archive/unarchive repositories based on user input
-          # Parse the user input from the issue comments
-          # If the user chooses to archive, use the GitHub API to archive the repository
-          # If the user chooses to unarchive, use the GitHub API to unarchive the repository
-
-          # Example: Use curl to make API requests
-          # Replace 'YOUR_ACCESS_TOKEN' with your actual GitHub access token
-          curl -X PATCH -H "Authorization: token YOUR_ACCESS_TOKEN" \
-               -H "Accept: application/vnd.github.v3+json" \
-               https://api.github.com/repos/OWNER/$repo \
-               -d '{"archived":true}' # or '{"archived":false}' for unarchiving
-
-      - name: Complete Workflow
-        id: complete_workflow
-        run: |
-          # Close the issue or update it with the workflow status
-          # Optionally, you can add a comment to the issue indicating that the workflow has completed
+        - name: echo
+          run: |
+            echo "${{repository}}"
+            echo "${{owner}}"
