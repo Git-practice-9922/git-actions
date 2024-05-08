@@ -32,7 +32,7 @@ jobs:
       
       - name: Access it
         run: |
-            echo "Repo Name is $Repo-name"
-            echo "Owner name is $Owner-name"
+            echo "Repo Name is ${{ steps.extract_repo_owner.outputs.Repo-name }}"
+            echo "Owner name is ${{ steps.extract_repo_owner.outputs.Owner-name }}"
 
     
