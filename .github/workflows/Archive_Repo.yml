@@ -10,8 +10,7 @@ jobs:
       matrix:
         repository: ${{ fromJson(github.event.issue.body).*.repository }}  # rep01, repo02
       max-parallel: 1
-    env:
-        Owner: ${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
+    
       
     outputs:  
       repo-name: ${{ steps.extract_repo_owner.outputs.repo_name }}
@@ -22,8 +21,8 @@ jobs:
         run: |
           # Extract repository and organization names from the issue body
           repository=${{ matrix.repository }}
+          Owner: ${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
           
-
           echo "Repo = $repository"
           echo "Owner = $Owner"
     
