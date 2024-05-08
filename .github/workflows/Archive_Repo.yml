@@ -1,38 +1,22 @@
-name: Archive/Unarchive Repo
+name: Archive/Unarchive Repos
 
 on:
-    issue_comment:
-        types: [created]
+  workflow_dispatch:
+
 jobs:
-  issue_flow:
+  archive_unarchive:
     runs-on: ubuntu-latest
-    strategy:  
-      matrix:
-        repository: ${{ fromJson(github.event.issue.body).*.repository }}  # rep01, repo02
-      max-parallel: 1
-
-      
-    outputs:  
-      repo-name: ${{ steps.extract_repo_owner.outputs.repo_name }}
-      owner-name: ${{ steps.extract_repo_owner.outputs.owner-name }}  
     steps:
-      - name: Extract Repository and Owner
-        id: extract_repo_owner
-        run: |
-          # Extract repository and organization names from the issue body
-          repository=$matrix.repository
-          owner=${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
-    
-    
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-          # Echo repository and owner names as output
-            echo "repo-name=$repository" >> $GITHUB_OUTPUT
-            echo "owner-name=$owner" >> $GITHUB_OUTPUT
-          
-      
-      - name: Access it
-        run: |
-            echo "Repo Name is ${{ steps.extract_repo_owner.outputs.repo-name }}"
-            echo "Owner name is ${{ steps.extract_repo_owner.outputs.owner-name }}"
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13.0-alpha.6
 
-    
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Python Script
+        run: python Archive-Unarchive.py
