@@ -30,9 +30,9 @@ jobs:
             echo "Owner-name=$owner" >> $GITHUB_OUTPUT
           
       
-      #- name: Output Repository and Owner
-    
-       # run: |
-          # Output the extracted repository and owner names
+      - name: Access it
+        run: |
+            echo "Repo Name is ${{ steps.extract_repo_owner.outputs.Repo-name }}"
+            echo "Owner name is ${{ steps.extract_repo_owner.outputs.Owner-name }}"
 
     
