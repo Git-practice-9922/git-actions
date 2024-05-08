@@ -23,9 +23,9 @@ jobs:
           # Extract repository and organization names from the issue body
           repository=${{ matrix.repository }}
           #Owner: ${{ fromJSON(github.event.issue.body)[matrix.repository].organisation }}
-          
+          owner = ${{ env.Owner }}
           echo "Repo = $repository"
-          echo "Owner = $Owner"
+          echo "Owner = $owner"
     
 
           # Echo repository and owner names as output
