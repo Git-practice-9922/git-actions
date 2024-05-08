@@ -13,8 +13,8 @@ jobs:
 
       
     outputs:  
-      Repo-name: ${{ steps.extract_repo_owner.outputs.repo_name }}
-      Owner-name: ${{ steps.extract_repo_owner.outputs.owner-name }}  
+      repo-name: ${{ steps.extract_repo_owner.outputs.repo_name }}
+      owner-name: ${{ steps.extract_repo_owner.outputs.owner-name }}  
     steps:
       - name: Extract Repository and Owner
         id: extract_repo_owner
@@ -26,8 +26,8 @@ jobs:
     
 
           # Echo repository and owner names as output
-            echo "Repo-name=$repository" >> $GITHUB_OUTPUT
-            echo "Owner-name=$owner" >> $GITHUB_OUTPUT
+            echo "repo-name=$repository" >> $GITHUB_OUTPUT
+            echo "owner-name=$owner" >> $GITHUB_OUTPUT
           
       
       - name: Access it
