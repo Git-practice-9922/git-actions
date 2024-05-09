@@ -6,7 +6,7 @@ os.environ["GITHUB_TOKEN"] = "${{ secrets.WORK_GITHUB_TOKEN  }}"
 def archive_repo(repo_name):
     response = requests.patch(
         f"https://api.github.com/repos/Git-practice-9922/{repo_name}",
-        headers={"Authorization": f"Bearer {os.getenv('GITHUB_TOKEN')}"},
+        headers={"Authorization": f"Bearer {os.environ('GITHUB_TOKEN')}"},
         json={"archived": True}
     )
     return response
@@ -15,7 +15,7 @@ def archive_repo(repo_name):
 def unarchive_repo(repo_name):
     response = requests.patch(
         f"https://api.github.com/repos/Git-practice-9922/{repo_name}",
-        headers={"Authorization": f"Bearer {os.getenv('GITHUB_TOKEN')}"},
+        headers={"Authorization": f"Bearer {os.environ('GITHUB_TOKEN')}"},
         json={"archived": False}
     )
     return response
