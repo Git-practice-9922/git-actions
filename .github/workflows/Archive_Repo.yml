@@ -23,7 +23,7 @@ jobs:
         run: pip install requests
 
       - name: Run Python Script
-        run: python Archive-Unarchive.py
+        run: python Archive-Unarchive-2.py
         env:
             GITHUB_TOKEN: ${{ secrets.WORK_GITHUB_TOKEN }}
             ACTION: ${{ github.event.inputs.action }}
