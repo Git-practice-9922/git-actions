@@ -1,7 +1,7 @@
 import os
 import requests
 
-os.environ["GITHUB_TOKEN"] = "${{ secrets.WORK_GITHUB_TOKEN  }}"
+os.environ["GITHUB_TOKEN"] = "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"
 # Function to archive a repository
 def archive_repo(repo_name):
     response = requests.patch(
