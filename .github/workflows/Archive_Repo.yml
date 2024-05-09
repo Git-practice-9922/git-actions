@@ -7,6 +7,9 @@ on:
           description: 'Action to perform (archive or unarchive)'
           required: true
 
+env:
+    github_token: ${{ secrets.WORK_GITHUB_TOKEN }}
+    action: ${{ github.event.inputs.action }}          
 jobs:
   archive_unarchive:
     runs-on: ubuntu-latest
@@ -24,6 +27,4 @@ jobs:
 
       - name: Run Python Script
         run: python Archive-Unarchive-2.py
-        env:
-            GITHUB_TOKEN: ${{ secrets.WORK_GITHUB_TOKEN }}
-            ACTION: ${{ github.event.inputs.action }}
+        

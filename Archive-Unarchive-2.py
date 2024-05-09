@@ -1,11 +1,14 @@
 import os
 import requests
 
+
+GITHUB_TOKEN = os.environ["github_token"]
+ACTION = os.environ["action"]
 # Function to archive a repository
 def archive_repo(repo_name):
     response = requests.patch(
         f"https://api.github.com/repos/Git-practice-9922/{repo_name}",
-        headers={"Authorization": f"Bearer {os.getenv('GITHUB_TOKEN')}"},
+        headers={"Authorization": f"Bearer {GITHUB_TOKEN}"},
         json={"archived": True}
     )
     return response
@@ -14,7 +17,7 @@ def archive_repo(repo_name):
 def unarchive_repo(repo_name):
     response = requests.patch(
         f"https://api.github.com/repos/Git-practice-9922/{repo_name}",
-        headers={"Authorization": f"Bearer {os.getenv('GITHUB_TOKEN')}"},
+        headers={"Authorization": f"Bearer {GITHUB_TOKEN}"},
         json={"archived": False}
     )
     return response
@@ -24,8 +27,8 @@ with open("input.txt", "r") as file:
     print(repo_names)
 
 # Prompt the user for an action
-action = input(f'Want to archive or unarchive the repositories? Type "archive" or "unarchive": ')
-
+#action = input(f'Want to archive or unarchive the repositories? Type "archive" or "unarchive": ')
+action = f"{ACTION}"
 
     # Perform action based on user input
 if action == "archive":
