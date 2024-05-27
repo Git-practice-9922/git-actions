@@ -1,0 +1,29 @@
+Legal-General-GitHub-Testing/frontend-template
+Legal-General-GitHub-Testing/fep-metadata
+Legal-General-GitHub-Testing/scram-leam
+Legal-General-GitHub-Testing/pot-fe-alldomains-error-pages
+Legal-General-GitHub-Testing/peter-evans-slash-command-dispatch
+ 
+ 
+{
+    "frontend-template": {
+        "repository": "frontend-template",
+        "organisation": "Legal-General-GitHub-Testing"
+    },
+    "fep-metadata": {
+        "repository": "fep-metadata",
+        "organisation": "Legal-General-GitHub-Testing"
+    },
+    "scram-leam": {
+        "repository": "scram-leam",
+        "organisation": "Legal-General-GitHub-Testing"
+    },
+    "pot-fe-alldomains-error-pages": {
+        "repository": "pot-fe-alldomains-error-pages",
+        "organisation": "Legal-General-GitHub-Testing"
+    },
+    "peter-evans-slash-command-dispatch": {
+        "repository": "peter-evans-slash-command-dispatch",
+        "organisation": "Legal-General-GitHub-Testing"
+    }
+}
