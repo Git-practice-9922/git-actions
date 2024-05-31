@@ -1,0 +1,62 @@
+name: Archive-Python Repo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  issue_flow:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13.0-alpha.6
+
+      - name: Install Dependencies
+        run: pip install requests pandas json
+
+      - name: Perform data transformation
+        run: |
+              python3 <<EOF
+              import pandas as pd
+              import json
+     
+              # Read the data from transformed-environment-secrets.xlsx
+              data = pd.read_excel('${{ github.workspace }}/source-repo/transformed-environment-secrets.xlsx')
+     
+              # Convert to JSON
+              json_data = {}
+              for index, row in data.iterrows():
+                  repo_name = row['Repository']
+                  env_name = row['Environment']
+                  secret_name = row['Secret']
+                  repository_id = row['Destination Repository ID']
+                  pat_name = row['Destination PAT']
+     
+                  #log each row being processed
+                  print(f"Procesing row {index}: Repository={repo_name}, Environment={env_name}, Secret={secret_name}, Destination PAT={pat_name}, Repository ID={repository_id}")
+                               
+                  # Add secret details to the environment dictionary
+                  row_data = {
+                      "repository": repo_name,
+                      "secretname": secret_name,
+                      "destinationEnvironmentName": env_name,
+                      "destinationRepositoryId": str(repository_id),  # Convert to string to maintain consistency
+                      "destinationPersonalAccessTokenName": pat_name
+                  }
+                 
+                  json_data[secret_name] = row_data
+     
+              # Save as JSON file
+              with open('${{ github.workspace }}/source-repo/output/transformed-environment-secrets.json', 'w') as json_file:
+                  json.dump(json_data, json_file, indent=4)
+     
+              #log the final JSON Output
+              print("Final JSON Output:")
+              print(json.dumps(json_data, indent=4))
+             
+              EOF
